@@ -48,14 +48,55 @@ Modern React ve TypeScript teknolojileri ile geliştirilmiş, ürün ve kullanı
 
 ```
 src/
-├── layouts/            # Layout bileşenleri
-├── pages/              # Sayfa bileşenleri
-├── services/           # API servisleri
-├── store/              # Redux store
-├── types/              # TypeScript type tanımları
-├── App.tsx            # Ana uygulama bileşeni
-├── main.tsx           # Uygulama entry point
-└── index.css          # Global stiller
+├── components/         # Yeniden kullanılabilir bileşenler
+│   ├── ActionButtons.tsx
+│   ├── AutoFillButton.tsx
+│   ├── SearchBar.tsx
+│   ├── cards/         # Kart bileşenleri
+│   │   ├── DataCard.tsx
+│   │   ├── ErrorCard.tsx
+│   │   ├── LoadingCard.tsx
+│   │   └── __tests__/ # Test dosyaları
+│   │       ├── DataCard.test.tsx
+│   │       └── __snapshots__/
+│   │           └── DataCard.test.tsx.snap
+│   └── layout/        # Layout bileşenleri
+│       ├── DetailLayout.tsx
+│       └── PageHeader.tsx
+├── constants/         # Sabit değerler
+│   └── index.ts
+├── layouts/           # Ana layout bileşenleri
+│   └── MainLayout.tsx
+├── routes/            # Sayfa bileşenleri
+│   ├── dashboard.tsx
+│   ├── not-found.tsx
+│   ├── products/      # Ürün sayfaları
+│   │   ├── add.tsx
+│   │   ├── detail.tsx
+│   │   ├── edit.tsx
+│   │   ├── index.tsx
+│   │   └── list.tsx
+│   └── users/         # Kullanıcı sayfaları
+│       ├── add.tsx
+│       ├── detail.tsx
+│       ├── edit.tsx
+│       ├── index.tsx
+│       └── list.tsx
+├── services/          # API servisleri
+│   └── api.ts
+├── store/             # Redux store
+│   ├── favoritesSlice.ts
+│   └── index.ts
+├── test/              # Test setup
+│   └── setup.ts
+├── types/             # TypeScript type tanımları
+│   └── index.ts
+├── utils/             # Yardımcı fonksiyonlar
+│   ├── debounce.ts
+│   └── LoadingSpinner.tsx
+├── App.tsx           # Ana uygulama bileşeni
+├── main.tsx          # Uygulama entry point
+└── index.css         # Global stiller
 ```
 
 ## 🎯 Özellikler
@@ -162,7 +203,9 @@ src/
 ├── components/
 │   └── cards/
 │       └── __tests__/
-│           └── DataCard.test.tsx    # DataCard component testleri
+│           ├── DataCard.test.tsx    # DataCard component testleri
+│           └── __snapshots__/
+│               └── DataCard.test.tsx.snap
 └── test/
     └── setup.ts                     # Test setup ve mock'lar
 ```
@@ -212,15 +255,15 @@ npm run test:ui
 
 ```typescript
 // Örnek test yapısı
-describe('DataCard', () => {
-  describe('Product Card', () => {
-    it('should render product card correctly', () => {
+describe("DataCard", () => {
+  describe("Product Card", () => {
+    it("should render product card correctly", () => {
       // Test implementation
     });
   });
-  
-  describe('User Card', () => {
-    it('should render user card correctly', () => {
+
+  describe("User Card", () => {
+    it("should render user card correctly", () => {
       // Test implementation
     });
   });
