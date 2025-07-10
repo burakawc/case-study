@@ -208,12 +208,31 @@ const mockUsers: User[] = [
 //   },
 // });
 
-// Simulate network delay
+/**
+ * Simulates network delay for realistic API behavior
+ * @param ms - Delay time in milliseconds
+ * @returns Promise that resolves after the specified delay
+ */
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 // Products API
 export const productsApi = {
-  // Get all products with pagination
+  /**
+   * Retrieves a paginated list of products with optional search and filtering
+   * @param params - Optional parameters for pagination and search
+   * @param params.page - Page number (default: 1)
+   * @param params.limit - Number of items per page (default: 10)
+   * @param params.search - Search term to filter products by title, description, or brand
+   * @returns Promise containing paginated product data
+   * @example
+   * ```typescript
+   * const products = await productsApi.getProducts({
+   *   page: 1,
+   *   limit: 10,
+   *   search: 'iPhone'
+   * });
+   * ```
+   */
   getProducts: async (params?: {
     page?: number;
     limit?: number;
@@ -249,7 +268,16 @@ export const productsApi = {
     };
   },
 
-  // Get product by ID
+  /**
+   * Retrieves a single product by its ID
+   * @param id - Product ID
+   * @returns Promise containing the product data
+   * @throws Error if product is not found
+   * @example
+   * ```typescript
+   * const product = await productsApi.getProduct(1);
+   * ```
+   */
   getProduct: async (id: number): Promise<Product> => {
     await delay(300);
     const product = mockProducts.find((p) => p.id === id);
@@ -259,7 +287,19 @@ export const productsApi = {
     return product;
   },
 
-  // Create product
+  /**
+   * Creates a new product
+   * @param data - Product creation data
+   * @returns Promise containing the created product with generated ID and timestamps
+   * @example
+   * ```typescript
+   * const newProduct = await productsApi.createProduct({
+   *   title: 'New Product',
+   *   price: 99.99,
+   *   // ... other fields
+   * });
+   * ```
+   */
   createProduct: async (data: CreateProductRequest): Promise<Product> => {
     await delay(500);
     const newProduct: Product = {
@@ -272,7 +312,20 @@ export const productsApi = {
     return newProduct;
   },
 
-  // Update product
+  /**
+   * Updates an existing product
+   * @param data - Product update data including the product ID
+   * @returns Promise containing the updated product
+   * @throws Error if product is not found
+   * @example
+   * ```typescript
+   * const updatedProduct = await productsApi.updateProduct({
+   *   id: 1,
+   *   title: 'Updated Product',
+   *   price: 149.99
+   * });
+   * ```
+   */
   updateProduct: async (data: UpdateProductRequest): Promise<Product> => {
     await delay(500);
     const index = mockProducts.findIndex((p) => p.id === data.id);
@@ -291,7 +344,16 @@ export const productsApi = {
     return updatedProduct;
   },
 
-  // Delete product
+  /**
+   * Deletes a product by its ID
+   * @param id - Product ID to delete
+   * @returns Promise that resolves when deletion is complete
+   * @throws Error if product is not found
+   * @example
+   * ```typescript
+   * await productsApi.deleteProduct(1);
+   * ```
+   */
   deleteProduct: async (id: number): Promise<void> => {
     await delay(300);
     const index = mockProducts.findIndex((p) => p.id === id);
@@ -304,7 +366,22 @@ export const productsApi = {
 
 // Users API
 export const usersApi = {
-  // Get all users with pagination
+  /**
+   * Retrieves a paginated list of users with optional search and filtering
+   * @param params - Optional parameters for pagination and search
+   * @param params.page - Page number (default: 1)
+   * @param params.limit - Number of items per page (default: 10)
+   * @param params.search - Search term to filter users by name, email, or username
+   * @returns Promise containing paginated user data
+   * @example
+   * ```typescript
+   * const users = await usersApi.getUsers({
+   *   page: 1,
+   *   limit: 10,
+   *   search: 'john'
+   * });
+   * ```
+   */
   getUsers: async (params?: {
     page?: number;
     limit?: number;
@@ -339,7 +416,16 @@ export const usersApi = {
     };
   },
 
-  // Get user by ID
+  /**
+   * Retrieves a single user by their ID
+   * @param id - User ID
+   * @returns Promise containing the user data
+   * @throws Error if user is not found
+   * @example
+   * ```typescript
+   * const user = await usersApi.getUser(1);
+   * ```
+   */
   getUser: async (id: number): Promise<User> => {
     await delay(300);
     const user = mockUsers.find((u) => u.id === id);
@@ -349,7 +435,20 @@ export const usersApi = {
     return user;
   },
 
-  // Create user
+  /**
+   * Creates a new user
+   * @param data - User creation data
+   * @returns Promise containing the created user with generated ID and timestamps
+   * @example
+   * ```typescript
+   * const newUser = await usersApi.createUser({
+   *   firstName: 'John',
+   *   lastName: 'Doe',
+   *   email: 'john@example.com',
+   *   // ... other fields
+   * });
+   * ```
+   */
   createUser: async (data: CreateUserRequest): Promise<User> => {
     await delay(500);
     const newUser: User = {
@@ -362,7 +461,20 @@ export const usersApi = {
     return newUser;
   },
 
-  // Update user
+  /**
+   * Updates an existing user
+   * @param data - User update data including the user ID
+   * @returns Promise containing the updated user
+   * @throws Error if user is not found
+   * @example
+   * ```typescript
+   * const updatedUser = await usersApi.updateUser({
+   *   id: 1,
+   *   firstName: 'Jane',
+   *   email: 'jane@example.com'
+   * });
+   * ```
+   */
   updateUser: async (data: UpdateUserRequest): Promise<User> => {
     await delay(500);
     const index = mockUsers.findIndex((u) => u.id === data.id);
@@ -381,7 +493,16 @@ export const usersApi = {
     return updatedUser;
   },
 
-  // Delete user
+  /**
+   * Deletes a user by their ID
+   * @param id - User ID to delete
+   * @returns Promise that resolves when deletion is complete
+   * @throws Error if user is not found
+   * @example
+   * ```typescript
+   * await usersApi.deleteUser(1);
+   * ```
+   */
   deleteUser: async (id: number): Promise<void> => {
     await delay(300);
     const index = mockUsers.findIndex((u) => u.id === id);

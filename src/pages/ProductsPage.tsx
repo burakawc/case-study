@@ -34,6 +34,18 @@ import type { RootState } from '@/store'
 const { Title } = Typography
 const { Search } = Input
 
+/**
+ * Products listing page component
+ * 
+ * Features:
+ * - Displays paginated list of products
+ * - Search and filtering functionality
+ * - Product CRUD operations (view, edit, delete)
+ * - Favorites management with Redux
+ * - Responsive table with sorting
+ * 
+ * @returns JSX element containing the products page
+ */
 const ProductsPage: React.FC = () => {
   const navigate = useNavigate()
   const queryClient = useQueryClient()
@@ -64,14 +76,26 @@ const ProductsPage: React.FC = () => {
     },
   })
 
+  /**
+   * Handles product deletion with confirmation
+   * @param id - Product ID to delete
+   */
   const handleDelete = (id: number) => {
     deleteMutation.mutate(id)
   }
 
+  /**
+   * Handles search input changes and updates filters
+   * @param value - Search term
+   */
   const handleSearch = (value: string) => {
     setFilters(prev => ({ ...prev, search: value, page: 1 }))
   }
 
+  /**
+   * Handles table pagination and sorting changes
+   * @param pagination - Pagination object from Ant Design Table
+   */
   const handleTableChange = (pagination: any) => {
     setFilters(prev => ({ 
       ...prev, 

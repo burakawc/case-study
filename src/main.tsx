@@ -9,7 +9,15 @@ import { store } from './store'
 import App from './App'
 import './index.css'
 
-// Create a client
+/**
+ * TanStack Query client configuration
+ * 
+ * Features:
+ * - 5 minute stale time for queries
+ * - 10 minute cache time
+ * - Single retry on failure
+ * - Disabled refetch on window focus
+ */
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -21,7 +29,14 @@ const queryClient = new QueryClient({
   },
 })
 
-// Custom theme configuration
+/**
+ * Custom Ant Design theme configuration
+ * 
+ * Customizes:
+ * - Primary color: #1890ff (blue)
+ * - Border radius: 6px
+ * - Font family: System fonts stack
+ */
 const theme = {
   token: {
     colorPrimary: '#1890ff',
@@ -30,6 +45,17 @@ const theme = {
   },
 }
 
+/**
+ * Application entry point
+ * 
+ * Sets up:
+ * - React Strict Mode
+ * - Redux Provider with store
+ * - TanStack Query Provider with client
+ * - Ant Design ConfigProvider with theme
+ * - React Router BrowserRouter
+ * - React Query DevTools (development only)
+ */
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <Provider store={store}>

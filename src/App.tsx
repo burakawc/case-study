@@ -10,6 +10,22 @@ import UserDetailPage from '@/pages/UserDetailPage'
 import EditUserPage from '@/pages/EditUserPage'
 import NotFoundPage from '@/pages/NotFoundPage'
 
+/**
+ * Main application component that defines the routing structure
+ * 
+ * Routes:
+ * - `/` - Dashboard (redirects to products)
+ * - `/products` - Products listing page
+ * - `/products/new` - Add new product form
+ * - `/products/:id` - Product detail page
+ * - `/products/:id/edit` - Edit product form
+ * - `/users` - Users listing page
+ * - `/users/:id` - User detail page
+ * - `/users/:id/edit` - Edit user form
+ * - `*` - 404 Not Found page
+ * 
+ * @returns JSX element containing the application routes
+ */
 const App: React.FC = () => {
   return (
     <Routes>

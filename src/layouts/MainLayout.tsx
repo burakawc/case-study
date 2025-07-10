@@ -15,6 +15,17 @@ import type { MenuProps } from 'antd'
 const { Header, Sider, Content } = Layout
 const { Title } = Typography
 
+/**
+ * Main layout component that provides the application shell
+ * 
+ * Features:
+ * - Collapsible sidebar navigation
+ * - Header with user menu
+ * - Responsive design
+ * - Route-based navigation highlighting
+ * 
+ * @returns JSX element containing the layout structure
+ */
 const MainLayout: React.FC = () => {
   const navigate = useNavigate()
   const location = useLocation()
