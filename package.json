@@ -12,7 +12,12 @@
     "type-check": "tsc --noEmit",
     "test": "vitest",
     "test:ui": "vitest --ui",
-    "test:coverage": "vitest --coverage"
+    "test:coverage": "vitest --coverage",
+    "test:watch": "vitest --watch",
+    "test:run": "vitest run",
+    "test:snapshot": "vitest run --reporter=verbose",
+    "test:coverage:html": "vitest --coverage --reporter=html",
+    "test:coverage:json": "vitest --coverage --reporter=json"
   },
   "author": "Burak Avcı",
   "license": "MIT",
@@ -31,6 +36,9 @@
     "react-router-dom": "^6.8.0"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^14.3.1",
+    "@testing-library/user-event": "^14.6.1",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
@@ -41,6 +49,7 @@
     "eslint": "^8.45.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.3",
+    "jsdom": "^26.1.0",
     "typescript": "^5.0.2",
     "vite": "^4.4.5",
     "vitest": "^0.34.0"

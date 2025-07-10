@@ -143,6 +143,112 @@ src/
 - **Content Area**: Main application content
 - **Breadcrumbs**: Navigation context
 
+## 🧪 Test
+
+Bu proje **Vitest** ve **React Testing Library** kullanarak unit testler içermektedir.
+
+### Test Teknolojileri
+
+- **Vitest** - Hızlı unit test framework
+- **React Testing Library** - React component testing
+- **@testing-library/jest-dom** - DOM testing utilities
+- **@testing-library/user-event** - User interaction simulation
+- **jsdom** - Browser environment simulation
+
+### Test Dosyaları
+
+```
+src/
+├── components/
+│   └── cards/
+│       └── __tests__/
+│           └── DataCard.test.tsx    # DataCard component testleri
+└── test/
+    └── setup.ts                     # Test setup ve mock'lar
+```
+
+### Test Komutları
+
+```bash
+# Tüm testleri çalıştır
+npm test
+
+# Watch mode'da testleri çalıştır
+npm run test:watch
+
+# Testleri bir kez çalıştır (watch olmadan)
+npm run test:run
+
+# Verbose output ile testleri çalıştır
+npm run test:snapshot
+
+# Coverage raporu oluştur
+npm run test:coverage
+
+# HTML coverage raporu oluştur
+npm run test:coverage:html
+
+# JSON coverage raporu oluştur
+npm run test:coverage:json
+
+# Vitest UI'ı aç
+npm run test:ui
+```
+
+### Test Kapsamı
+
+#### DataCard Component Testleri
+
+- ✅ **Product Card Rendering**: Ürün bilgilerinin doğru gösterilmesi
+- ✅ **User Card Rendering**: Kullanıcı bilgilerinin doğru gösterilmesi
+- ✅ **Action Buttons**: View, Edit, Delete, Favorite butonları
+- ✅ **Edge Cases**: Boş data, eksik prop'lar
+- ✅ **Snapshot Tests**: Visual regression testing
+- ✅ **Rating Logic**: Farklı rating değerleri için renk kontrolü
+- ✅ **Description Truncation**: Uzun açıklamaların kısaltılması
+- ✅ **Gender Styling**: Cinsiyet bazlı renk stilleri
+
+### Test Yapısı
+
+```typescript
+// Örnek test yapısı
+describe('DataCard', () => {
+  describe('Product Card', () => {
+    it('should render product card correctly', () => {
+      // Test implementation
+    });
+  });
+  
+  describe('User Card', () => {
+    it('should render user card correctly', () => {
+      // Test implementation
+    });
+  });
+});
+```
+
+### Mock'lar
+
+- **ActionButtons Component**: Isolated testing için mock'landı
+- **Ant Design Components**: Browser compatibility için mock'landı
+- **Browser APIs**: matchMedia, ResizeObserver mock'landı
+
+### Snapshot Testing
+
+Snapshot'lar otomatik olarak oluşturulur ve `__snapshots__` klasöründe saklanır. Component değişiklikleri intentional olduğunda snapshot'ları güncelle:
+
+```bash
+npm run test:run -- --update-snapshots
+```
+
+### Test Best Practices
+
+1. **Isolation**: Her test bağımsız ve diğer testlere bağımlı değil
+2. **Descriptive Names**: Test isimleri ne test edildiğini açıkça belirtiyor
+3. **Mocking**: External dependencies düzgün mock'lanıyor
+4. **Coverage**: Hem happy path hem edge case'ler test ediliyor
+5. **Accessibility**: Semantic queries kullanılıyor (getByText, getByTestId)
+
 ## 📄 Lisans
 
 Bu proje MIT lisansı altında lisanslanmıştır.
