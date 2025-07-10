@@ -1,6 +1,5 @@
 import React, { useState, useCallback, useMemo } from 'react'
 import { 
-  Table, 
   Button, 
   Input, 
   Space, 
@@ -14,7 +13,8 @@ import {
   Badge,
   Grid,
   Row,
-  Col
+  Col,
+  Statistic
 } from 'antd'
 const { useBreakpoint } = Grid
 import { 
@@ -34,6 +34,8 @@ import { toggleFavorite } from '@/store/favoritesSlice'
 import { debounce } from '@/utils/debounce'
 import type { Product, TableFilters } from '@/types'
 import type { RootState } from '@/store'
+import { useQuery as useQueryUsers } from '@tanstack/react-query'
+import { usersApi } from '@/services/api'
 
 const { Title } = Typography
 const { Search } = Input
@@ -98,17 +100,7 @@ const ProductsList: React.FC = () => {
     debouncedSearch(value)
   }, [debouncedSearch])
 
-  /**
-   * Handles table pagination and sorting changes
-   * @param pagination - Pagination object from Ant Design Table
-   */
-  const handleTableChange = (pagination: any) => {
-    setFilters(prev => ({ 
-      ...prev, 
-      page: pagination.current,
-      limit: pagination.pageSize 
-    }))
-  }
+
 
   // Mobile card component
   const ProductCard: React.FC<{ product: Product }> = React.memo(({ product }) => {
@@ -215,126 +207,7 @@ const ProductsList: React.FC = () => {
     )
   })
 
-  const columns = [
-    {
-      title: 'Image',
-      dataIndex: 'thumbnail',
-      key: 'thumbnail',
-      width: 80,
-      render: (thumbnail: string) => (
-        <Image
-          src={thumbnail}
-          alt="Product"
-          width={50}
-          height={50}
-          style={{ objectFit: 'cover', borderRadius: 4 }}
-          fallback="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMIAAADDCAYAAADQvc6UAAABRWlDQ1BJQ0MgUHJvZmlsZQAAKJFjYGASSSwoyGFhYGDIzSspCnJ3UoiIjFJgf8LAwSDCIMogwMCcmFxc4BgQ4ANUwgCjUcG3awyMIPqyLsis7PPOq3QdDFcvjV3jOD1boQVTPQrgSkktTgbSf4A4LbmgqISBgTEFyFYuLykAsTuAbJEioKOA7DkgdjqEvQHEToKwj4DVhAQ5A9k3gGyB5IxEoBmML4BsnSQk8XQkNtReEOBxcfXxUQg1Mjc0dyHgXNJBSWpFCYh2zi+oLMpMzyhRcASGUqqCZ16yno6CkYGRAQMDKMwhqj/fAIcloxgHQqxAjIHBEugw5sUIsSQpBobtQPdLciLEVJYzMPBHMDBsayhILEqEO4DxG0txmrERhM29nYGBddr//5/DGRjYNRkY/l7////39v///y4Dmn+LgeHANwDrkl1AuO+pmgAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAwqADAAQAAAABAAAAwwAAAAD9b/HnAAAHlklEQVR4Ae3dP3Ik1RnG4W+FgYxN"
-        />
-      ),
-    },
-    {
-      title: 'Title',
-      dataIndex: 'title',
-      key: 'title',
-      render: (title: string, record: Product) => (
-        <Tooltip title={record.description}>
-          <span style={{ fontWeight: 500 }}>{title}</span>
-        </Tooltip>
-      ),
-    },
-    {
-      title: 'Brand',
-      dataIndex: 'brand',
-      key: 'brand',
-      render: (brand: string) => <Tag color="blue">{brand}</Tag>,
-    },
-    {
-      title: 'Category',
-      dataIndex: 'category',
-      key: 'category',
-      render: (category: string) => <Tag color="green">{category}</Tag>,
-    },
-    {
-      title: 'Price',
-      dataIndex: 'price',
-      key: 'price',
-      render: (price: number) => `$${price}`,
-      sorter: true,
-    },
-    {
-      title: 'Stock',
-      dataIndex: 'stock',
-      key: 'stock',
-      render: (stock: number) => (
-        <Badge 
-          count={stock} 
-          style={{ 
-            backgroundColor: stock > 50 ? '#52c41a' : stock > 20 ? '#faad14' : '#f5222d' 
-          }} 
-        />
-      ),
-      sorter: true,
-    },
-    {
-      title: 'Rating',
-      dataIndex: 'rating',
-      key: 'rating',
-      render: (rating: number) => (
-        <Tag color={rating >= 4 ? 'green' : rating >= 3 ? 'orange' : 'red'}>
-          {rating.toFixed(1)} ⭐
-        </Tag>
-      ),
-      sorter: true,
-    },
-    {
-      title: 'Actions',
-      key: 'actions',
-      width: 120,
-      render: (_: any, record: Product) => {
-        const isFavorite = favorites.some((fav: any) => fav.id === record.id)
-        
-        return (
-          <Space size="small">
-            <Tooltip title="View Details">
-              <Button
-                type="text"
-                icon={<EyeOutlined />}
-                onClick={() => navigate(`/products/${record.id}`)}
-              />
-            </Tooltip>
-            <Tooltip title="Edit">
-              <Button
-                type="text"
-                icon={<EditOutlined />}
-                onClick={() => navigate(`/products/${record.id}/edit`)}
-              />
-            </Tooltip>
-            <Tooltip title={isFavorite ? "Remove from Favorites" : "Add to Favorites"}>
-              <Button
-                type="text"
-                icon={isFavorite ? <HeartFilled style={{ color: '#f5222d' }} /> : <HeartOutlined />}
-                onClick={() => dispatch(toggleFavorite(record))}
-              />
-            </Tooltip>
-            <Tooltip title="Delete">
-              <Popconfirm
-                title="Are you sure you want to delete this product?"
-                onConfirm={() => handleDelete(record.id)}
-                okText="Yes"
-                cancelText="No"
-              >
-                <Button
-                  type="text"
-                  danger
-                  icon={<DeleteOutlined />}
-                />
-              </Popconfirm>
-            </Tooltip>
-          </Space>
-        )
-      },
-    },
-  ]
+
 
   if (error) {
     return (
@@ -414,4 +287,4 @@ const ProductsList: React.FC = () => {
   )
 }
 
-export default ProductsList 
+export default ProductsList; 

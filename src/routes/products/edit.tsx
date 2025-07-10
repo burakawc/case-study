@@ -17,7 +17,6 @@ import {
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { productsApi } from '@/services/api'
 import { ArrowLeftOutlined, SaveOutlined } from '@ant-design/icons'
-// import type { UpdateProductRequest } from '@/types'
 
 const { Title } = Typography
 const { TextArea } = Input

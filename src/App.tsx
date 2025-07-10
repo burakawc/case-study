@@ -6,6 +6,7 @@ import LoadingSpinner from '@/utils/LoadingSpinner'
 // Lazy load components
 const ProductsLayout = lazy(() => import('@/routes/products/index'))
 const ProductsList = lazy(() => import('@/routes/products/list'))
+const Dashboard = lazy(() => import('@/routes/dashboard'))
 const ProductDetail = lazy(() => import('@/routes/products/detail'))
 const AddProduct = lazy(() => import('@/routes/products/add'))
 const EditProduct = lazy(() => import('@/routes/products/edit'))
@@ -37,7 +38,7 @@ const App: FunctionComponent = () => {
       <Route path="/" element={<MainLayout />}>
         <Route index element={
           <Suspense fallback={<LoadingSpinner />}>
-            <ProductsList />
+            <Dashboard />
           </Suspense>
         } />
         

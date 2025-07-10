@@ -1,6 +1,5 @@
 import React, { useState, useCallback, useMemo } from 'react'
 import { 
-  Table, 
   Button, 
   Input, 
   Space, 
@@ -87,13 +86,7 @@ const UsersList: React.FC = () => {
     debouncedSearch(value)
   }, [debouncedSearch])
 
-  const handleTableChange = (pagination: any) => {
-    setFilters(prev => ({ 
-      ...prev, 
-      page: pagination.current,
-      limit: pagination.pageSize 
-    }))
-  }
+
 
   // Mobile card component
   const UserCard: React.FC<{ user: User }> = React.memo(({ user }) => {
@@ -176,123 +169,7 @@ const UsersList: React.FC = () => {
     )
   })
 
-  const columns = [
-    {
-      title: 'Avatar',
-      dataIndex: 'image',
-      key: 'image',
-      width: 80,
-      render: (image: string) => (
-        <Avatar 
-          src={image} 
-          size={50}
-          icon={<UserOutlined />}
-        />
-      ),
-    },
-    {
-      title: 'Name',
-      key: 'name',
-      render: (record: User) => (
-        <div>
-          <div style={{ fontWeight: 500 }}>
-            {record.firstName} {record.lastName}
-          </div>
-          <div style={{ fontSize: '12px', color: '#666' }}>
-            @{record.username}
-          </div>
-        </div>
-      ),
-    },
-    {
-      title: 'Email',
-      dataIndex: 'email',
-      key: 'email',
-      render: (email: string) => (
-        <Tooltip title={email}>
-          <span style={{ fontSize: '12px' }}>
-            {email.length > 25 ? `${email.substring(0, 25)}...` : email}
-          </span>
-        </Tooltip>
-      ),
-    },
-    {
-      title: 'Age',
-      dataIndex: 'age',
-      key: 'age',
-      render: (age: number) => (
-        <Badge count={age} style={{ backgroundColor: '#1890ff' }} />
-      ),
-      sorter: true,
-    },
-    {
-      title: 'Gender',
-      dataIndex: 'gender',
-      key: 'gender',
-      render: (gender: string) => (
-        <Tag color={gender === 'male' ? 'blue' : gender === 'female' ? 'pink' : 'default'}>
-          {gender}
-        </Tag>
-      ),
-    },
-    {
-      title: 'Blood Group',
-      dataIndex: 'bloodGroup',
-      key: 'bloodGroup',
-      render: (bloodGroup: string) => (
-        <Tag color="red">{bloodGroup}</Tag>
-      ),
-    },
-    {
-      title: 'Company',
-      dataIndex: ['company', 'name'],
-      key: 'company',
-      render: (companyName: string, record: User) => (
-        <Tooltip title={`${record.company.title} at ${companyName}`}>
-          <span style={{ fontSize: '12px' }}>
-            {companyName}
-          </span>
-        </Tooltip>
-      ),
-    },
-    {
-      title: 'Actions',
-      key: 'actions',
-      width: 120,
-      render: (_: any, record: User) => (
-        <Space size="small">
-          <Tooltip title="View Details">
-            <Button
-              type="text"
-              icon={<EyeOutlined />}
-              onClick={() => navigate(`/users/${record.id}`)}
-            />
-          </Tooltip>
-          <Tooltip title="Edit">
-            <Button
-              type="text"
-              icon={<EditOutlined />}
-              onClick={() => navigate(`/users/${record.id}/edit`)}
-            />
-          </Tooltip>
-          <Tooltip title="Delete">
-            <Popconfirm
-              title="Are you sure you want to delete this user?"
-              onConfirm={() => handleDelete(record.id)}
-              okText="Yes"
-              cancelText="No"
-            >
-              <Button
-                type="text"
-                danger
-                icon={<DeleteOutlined />}
-              />
-            </Popconfirm>
-          </Tooltip>
-        </Space>
-      ),
-    },
-  ]
+
 
   if (error) {
     return (
