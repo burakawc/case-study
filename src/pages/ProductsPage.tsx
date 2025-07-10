@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback, useMemo } from 'react'
 import { 
   Table, 
   Button, 
@@ -12,10 +12,8 @@ import {
   message,
   Tooltip,
   Badge,
-  Row,
-  Col
+  Grid
 } from 'antd'
-import { Grid } from 'antd'
 const { useBreakpoint } = Grid
 import { 
   PlusOutlined, 
@@ -32,6 +30,7 @@ import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { productsApi } from '@/services/api'
 import { toggleFavorite } from '@/store/favoritesSlice'
+import { debounce } from '@/utils/debounce'
 import type { Product, TableFilters } from '@/types'
 import type { RootState } from '@/store'
 
@@ -90,13 +89,13 @@ const ProductsPage: React.FC = () => {
     deleteMutation.mutate(id)
   }
 
-  /**
-   * Handles search input changes and updates filters
-   * @param value - Search term
-   */
-  const handleSearch = (value: string) => {
+  const debouncedSearch = useMemo(() => debounce((value: string) => {
     setFilters(prev => ({ ...prev, search: value, page: 1 }))
-  }
+  }, 400), [])
+
+  const handleSearch = useCallback((value: string) => {
+    debouncedSearch(value)
+  }, [debouncedSearch])
 
   /**
    * Handles table pagination and sorting changes
@@ -111,7 +110,7 @@ const ProductsPage: React.FC = () => {
   }
 
   // Mobile card component
-  const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
+  const ProductCard: React.FC<{ product: Product }> = React.memo(({ product }) => {
     const isFavorite = favorites.some((fav: any) => fav.id === product.id)
     
     return (
@@ -213,7 +212,7 @@ const ProductsPage: React.FC = () => {
         </div>
       </Card>
     )
-  }
+  })
 
   const columns = [
     {
@@ -380,6 +379,7 @@ const ProductsPage: React.FC = () => {
               width: screens.xs ? '100%' : screens.sm ? '100%' : 300,
               maxWidth: 400
             }}
+            onChange={(e) => handleSearch(e.target.value)}
             onSearch={handleSearch}
           />
         </div>

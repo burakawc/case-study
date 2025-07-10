@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback, useMemo } from 'react'
 import { 
   Table, 
   Button, 
@@ -25,6 +25,7 @@ import {
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
 import { usersApi } from '@/services/api'
+import { debounce } from '@/utils/debounce'
 import type { User, TableFilters } from '@/types'
 
 const { Title } = Typography
@@ -64,9 +65,13 @@ const UsersPage: React.FC = () => {
     deleteMutation.mutate(id)
   }
 
-  const handleSearch = (value: string) => {
+  const debouncedSearch = useMemo(() => debounce((value: string) => {
     setFilters(prev => ({ ...prev, search: value, page: 1 }))
-  }
+  }, 400), [])
+
+  const handleSearch = useCallback((value: string) => {
+    debouncedSearch(value)
+  }, [debouncedSearch])
 
   const handleTableChange = (pagination: any) => {
     setFilters(prev => ({ 
@@ -77,7 +82,7 @@ const UsersPage: React.FC = () => {
   }
 
   // Mobile card component
-  const UserCard: React.FC<{ user: User }> = ({ user }) => {
+  const UserCard: React.FC<{ user: User }> = React.memo(({ user }) => {
     return (
       <Card
         hoverable
@@ -155,7 +160,7 @@ const UsersPage: React.FC = () => {
         </div>
       </Card>
     )
-  }
+  })
 
   const columns = [
     {
@@ -319,6 +324,7 @@ const UsersPage: React.FC = () => {
               width: screens.xs ? '100%' : screens.sm ? '100%' : 300,
               maxWidth: 400
             }}
+            onChange={(e) => handleSearch(e.target.value)}
             onSearch={handleSearch}
           />
         </div>
