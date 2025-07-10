@@ -1,16 +1,18 @@
-# Senior Frontend Developer Case Study
+# Buavci CMS
 
-Bu proje, senior frontend developer seviyesinde bir yönetim paneli uygulamasıdır. Ürün ve kullanıcı sayfalarını yönetebileceğiniz, modern React ve TypeScript teknolojileri ile geliştirilmiş bir case study'dir.
+Modern React ve TypeScript teknolojileri ile geliştirilmiş, ürün ve kullanıcı yönetimi için tasarlanmış bir yönetim paneli uygulamasıdır.
 
 ## 🚀 Teknolojiler
 
 - **React 18** - Modern React hooks ve functional components
 - **TypeScript** - İleri derecede type safety
 - **Vite** - Hızlı build tool ve development server
+- **TanStack Query (React Query)** - Server state management ve cache management
 - **Redux Toolkit** - State management
 - **React Router DOM** - Client-side routing
 - **Ant Design** - UI component library
 - **Axios** - HTTP client
+- **Date-fns** - Date utility library
 
 ## 📋 Gereksinimler
 
@@ -82,6 +84,7 @@ src/
 
 3. **State Management**
 
+   - ✅ TanStack Query ile server state
    - ✅ Redux Toolkit ile favori ürünler
    - ✅ Form validation ve error handling
 
@@ -97,6 +100,7 @@ src/
 
 5. **Teknik Özellikler**
    - ✅ TypeScript ile type safety
+   - ✅ TanStack Query ile cache management
    - ✅ React Router ile client-side routing
    - ✅ Ant Design ile tutarlı UI
    - ✅ Mock API ile gerçekçi data flow
@@ -105,6 +109,7 @@ src/
 
 ### State Management
 
+- **TanStack Query**: Server state management
 - **Redux Toolkit**: Global state management (favorites)
 - **React useState**: Local component state
 - **React Router**: Navigation state
@@ -112,8 +117,9 @@ src/
 ### Data Flow
 
 1. **API Layer**: Mock API servisleri (`src/services/api.ts`)
-2. **Component Layer**: React components
-3. **UI Layer**: Ant Design components
+2. **Query Layer**: TanStack Query hooks
+3. **Component Layer**: React components
+4. **UI Layer**: Ant Design components
 
 ### Type Safety
 
@@ -143,7 +149,7 @@ Bu proje MIT lisansı altında lisanslanmıştır.
 
 ## 👨‍💻 Geliştirici
 
-**Senior Frontend Developer**
+**Burak Avcı**
 
 - Modern React patterns
 - TypeScript expertise
@@ -152,4 +158,4 @@ Bu proje MIT lisansı altında lisanslanmıştır.
 
 ---
 
-**Not**: Bu proje bir case study'dir ve gerçek bir production uygulaması değildir. Mock data kullanılmaktadır.
+**Not**: Bu proje mock data kullanmaktadır.

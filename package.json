@@ -1,7 +1,7 @@
 {
-  "name": "senior-frontend-case",
+  "name": "buavci-cms",
   "version": "1.0.0",
-  "description": "Senior Frontend Developer Case Study with Advanced TypeScript",
+  "description": "Modern CMS built with React and TypeScript",
   "main": "dist/index.js",
   "scripts": {
     "dev": "vite",
@@ -14,7 +14,7 @@
     "test:ui": "vitest --ui",
     "test:coverage": "vitest --coverage"
   },
-  "author": "buavci",
+  "author": "Burak Avcı",
   "license": "MIT",
   "dependencies": {
     "@ant-design/icons": "^5.2.0",
