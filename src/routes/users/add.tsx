@@ -15,8 +15,9 @@ import {
 import { useNavigate } from 'react-router-dom'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { usersApi } from '@/services/api'
-import { ArrowLeftOutlined, SaveOutlined } from '@ant-design/icons'
+import { ArrowLeftOutlined, SaveOutlined, ThunderboltOutlined } from '@ant-design/icons'
 import type { CreateUserRequest } from '@/types'
+import { USER_DUMMY_DATA, BLOOD_GROUPS, USER_GENDERS, HAIR_COLORS, HAIR_TYPES, CARD_TYPES, CURRENCIES } from '@/constants'
 
 const { Title } = Typography
 const { TextArea } = Input
@@ -101,6 +102,11 @@ const AddUserPage: React.FC = () => {
     navigate('/users')
   }
 
+  const handleAutoFill = () => {
+    form.setFieldsValue(USER_DUMMY_DATA)
+    message.success('Form otomatik olarak dolduruldu!')
+  }
+
   return (
     <Card>
       <Space style={{ marginBottom: 24 }}>
@@ -109,6 +115,13 @@ const AddUserPage: React.FC = () => {
           onClick={handleCancel}
         >
           Back to Users
+        </Button>
+        <Button 
+          type="dashed"
+          icon={<ThunderboltOutlined />} 
+          onClick={handleAutoFill}
+        >
+          Otomatik Doldur
         </Button>
       </Space>
 
