@@ -186,6 +186,32 @@ const UserDetailPage: React.FC = () => {
           {user.bank.iban}
         </Descriptions.Item>
       </Descriptions>
+
+      <Divider />
+
+      <Descriptions title="Additional Information" bordered column={2}>
+        <Descriptions.Item label="Domain">
+          {user.domain}
+        </Descriptions.Item>
+        <Descriptions.Item label="IP Address">
+          {user.ip}
+        </Descriptions.Item>
+        <Descriptions.Item label="MAC Address">
+          {user.macAddress}
+        </Descriptions.Item>
+        <Descriptions.Item label="University">
+          {user.university}
+        </Descriptions.Item>
+        <Descriptions.Item label="EIN">
+          {user.ein}
+        </Descriptions.Item>
+        <Descriptions.Item label="SSN">
+          {user.ssn}
+        </Descriptions.Item>
+        <Descriptions.Item label="User Agent" span={2}>
+          {user.userAgent}
+        </Descriptions.Item>
+      </Descriptions>
     </>
   )
 
