@@ -11,8 +11,12 @@ import {
   Popconfirm,
   message,
   Tooltip,
-  Badge
+  Badge,
+  Row,
+  Col
 } from 'antd'
+import { Grid } from 'antd'
+const { useBreakpoint } = Grid
 import { 
   PlusOutlined, 
   SearchOutlined, 
@@ -43,6 +47,7 @@ const { Search } = Input
  * - Product CRUD operations (view, edit, delete)
  * - Favorites management with Redux
  * - Responsive table with sorting
+ * - Mobile-friendly card layout
  * 
  * @returns JSX element containing the products page
  */
@@ -51,6 +56,7 @@ const ProductsPage: React.FC = () => {
   const queryClient = useQueryClient()
   const dispatch = useDispatch()
   const favorites = useSelector((state: RootState) => (state as any).favorites.products)
+  const screens = useBreakpoint()
   const [filters, setFilters] = useState<TableFilters>({
     page: 1,
     limit: 10,
@@ -102,6 +108,97 @@ const ProductsPage: React.FC = () => {
       page: pagination.current,
       limit: pagination.pageSize 
     }))
+  }
+
+  // Mobile card component
+  const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
+    const isFavorite = favorites.some((fav: any) => fav.id === product.id)
+    
+    return (
+      <Card
+        hoverable
+        style={{ marginBottom: 16 }}
+        bodyStyle={{ padding: 16 }}
+        actions={[
+          <Tooltip title="View Details">
+            <Button
+              type="text"
+              icon={<EyeOutlined />}
+              onClick={() => navigate(`/products/${product.id}`)}
+            />
+          </Tooltip>,
+          <Tooltip title="Edit">
+            <Button
+              type="text"
+              icon={<EditOutlined />}
+              onClick={() => navigate(`/products/${product.id}/edit`)}
+            />
+          </Tooltip>,
+          <Tooltip title={isFavorite ? "Remove from Favorites" : "Add to Favorites"}>
+            <Button
+              type="text"
+              icon={isFavorite ? <HeartFilled style={{ color: '#f5222d' }} /> : <HeartOutlined />}
+              onClick={() => dispatch(toggleFavorite(product))}
+            />
+          </Tooltip>,
+          <Tooltip title="Delete">
+            <Popconfirm
+              title="Are you sure you want to delete this product?"
+              onConfirm={() => handleDelete(product.id)}
+              okText="Yes"
+              cancelText="No"
+            >
+              <Button
+                type="text"
+                danger
+                icon={<DeleteOutlined />}
+              />
+            </Popconfirm>
+          </Tooltip>,
+        ]}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', marginBottom: 12 }}>
+          <Image
+            src={product.thumbnail}
+            alt={product.title}
+            width={60}
+            height={60}
+            style={{ objectFit: 'cover', borderRadius: 8, marginRight: 12 }}
+          />
+          <div style={{ flex: 1 }}>
+            <Title level={5} style={{ margin: 0, marginBottom: 4 }}>
+              {product.title}
+            </Title>
+            <div style={{ fontSize: '12px', color: '#666', marginBottom: 8 }}>
+              {product.description.length > 50 
+                ? `${product.description.substring(0, 50)}...` 
+                : product.description
+              }
+            </div>
+            <Space size="small">
+              <Tag color="blue">{product.brand}</Tag>
+              <Tag color="green">{product.category}</Tag>
+            </Space>
+          </div>
+        </div>
+        
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div>
+            <div style={{ fontSize: '18px', fontWeight: 'bold', color: '#1890ff' }}>
+              ${product.price}
+            </div>
+            <div style={{ fontSize: '12px', color: '#666' }}>
+              Stock: {product.stock}
+            </div>
+          </div>
+          <div style={{ textAlign: 'right' }}>
+            <Tag color={product.rating >= 4 ? 'green' : product.rating >= 3 ? 'orange' : 'red'}>
+              {product.rating.toFixed(1)} ⭐
+            </Tag>
+          </div>
+        </div>
+      </Card>
+    )
   }
 
   const columns = [
@@ -242,7 +339,9 @@ const ProductsPage: React.FC = () => {
           display: 'flex', 
           justifyContent: 'space-between', 
           alignItems: 'center',
-          marginBottom: 16 
+          marginBottom: 16,
+          flexWrap: 'wrap',
+          gap: 16
         }}>
           <Title level={3} style={{ margin: 0 }}>
             <ShoppingOutlined style={{ marginRight: 8 }} />
@@ -257,34 +356,54 @@ const ProductsPage: React.FC = () => {
           </Button>
         </div>
 
-        <Space style={{ marginBottom: 16, width: '100%', justifyContent: 'space-between' }}>
+        <div style={{ marginBottom: 16 }}>
           <Search
             placeholder="Search products..."
             allowClear
             enterButton={<SearchOutlined />}
             size="large"
-            style={{ width: 300 }}
+            style={{ 
+              width: screens.xs ? '100%' : screens.sm ? '100%' : 300,
+              maxWidth: 400
+            }}
             onSearch={handleSearch}
           />
-        </Space>
+        </div>
 
-        <Table
-          columns={columns}
-          dataSource={productsData?.data || []}
-          loading={isLoading}
-          rowKey="id"
-          pagination={{
-            current: filters.page || 1,
-            pageSize: filters.limit || 10,
-            total: productsData?.total || 0,
-            showSizeChanger: true,
-            showQuickJumper: true,
-            showTotal: (total, range) => 
-              `${range[0]}-${range[1]} of ${total} items`,
-          }}
-          onChange={handleTableChange}
-          scroll={{ x: 1200 }}
-        />
+        {/* Mobile/Tablet Card Layout */}
+        {screens.xs || screens.sm ? (
+          <div>
+            {productsData?.data.map((product: Product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+            <div style={{ textAlign: 'center', marginTop: 16 }}>
+              <span style={{ color: '#666' }}>
+                Showing {productsData?.data.length || 0} of {productsData?.total || 0} products
+              </span>
+            </div>
+          </div>
+        ) : (
+          /* Desktop Table Layout */
+          <Table
+            columns={columns}
+            dataSource={productsData?.data || []}
+            loading={isLoading}
+            rowKey="id"
+            pagination={{
+              current: filters.page || 1,
+              pageSize: filters.limit || 10,
+              total: productsData?.total || 0,
+              showSizeChanger: true,
+              showQuickJumper: true,
+              showTotal: (total, range) => 
+                `${range[0]}-${range[1]} of ${total} items`,
+              responsive: true,
+            }}
+            onChange={handleTableChange}
+            scroll={{ x: 1200 }}
+            size={screens.md ? 'middle' : 'small'}
+          />
+        )}
       </Card>
     </div>
   )
