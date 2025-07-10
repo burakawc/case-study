@@ -69,6 +69,15 @@ export const USER_DUMMY_DATA = {
   bankCardExpire: "12/26",
   bankCurrency: "TL",
   bankIban: "TR33 0001 0002 3456 7890 1234 59",
+
+  // Additional Information
+  domain: "example.com",
+  ip: "192.168.1.100",
+  macAddress: "00:1B:44:11:3A:B7",
+  university: "İstanbul Teknik Üniversitesi",
+  ein: "12-3456789",
+  ssn: "123-45-6789",
+  userAgent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
 };
 
 // Product categories

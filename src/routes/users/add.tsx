@@ -10,7 +10,8 @@ import {
   Typography, 
   message,
   Row,
-  Col
+  Col,
+  Divider
 } from 'antd'
 import { useNavigate } from 'react-router-dom'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
@@ -615,6 +616,85 @@ const AddUserPage: React.FC = () => {
               ]}
             >
               <Input placeholder="Enter IBAN" />
+            </Form.Item>
+          </Col>
+        </Row>
+
+        <Divider />
+
+        <Title level={4}>Additional Information</Title>
+        <Row gutter={24}>
+          <Col span={8}>
+            <Form.Item
+              name="domain"
+              label="Domain"
+              rules={[{ required: true, message: 'Please enter domain' }]}
+            >
+              <Input placeholder="Enter domain" />
+            </Form.Item>
+          </Col>
+          
+          <Col span={8}>
+            <Form.Item
+              name="ip"
+              label="IP Address"
+              rules={[{ required: true, message: 'Please enter IP address' }]}
+            >
+              <Input placeholder="Enter IP address" />
+            </Form.Item>
+          </Col>
+          
+          <Col span={8}>
+            <Form.Item
+              name="macAddress"
+              label="MAC Address"
+              rules={[{ required: true, message: 'Please enter MAC address' }]}
+            >
+              <Input placeholder="Enter MAC address" />
+            </Form.Item>
+          </Col>
+        </Row>
+
+        <Row gutter={24}>
+          <Col span={12}>
+            <Form.Item
+              name="university"
+              label="University"
+              rules={[{ required: true, message: 'Please enter university' }]}
+            >
+              <Input placeholder="Enter university" />
+            </Form.Item>
+          </Col>
+          
+          <Col span={12}>
+            <Form.Item
+              name="ein"
+              label="EIN"
+              rules={[{ required: true, message: 'Please enter EIN' }]}
+            >
+              <Input placeholder="Enter EIN" />
+            </Form.Item>
+          </Col>
+        </Row>
+
+        <Row gutter={24}>
+          <Col span={12}>
+            <Form.Item
+              name="ssn"
+              label="SSN"
+              rules={[{ required: true, message: 'Please enter SSN' }]}
+            >
+              <Input placeholder="Enter SSN" />
+            </Form.Item>
+          </Col>
+          
+          <Col span={12}>
+            <Form.Item
+              name="userAgent"
+              label="User Agent"
+              rules={[{ required: true, message: 'Please enter user agent' }]}
+            >
+              <Input placeholder="Enter user agent" />
             </Form.Item>
           </Col>
         </Row>
