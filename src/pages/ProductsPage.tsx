@@ -12,7 +12,9 @@ import {
   message,
   Tooltip,
   Badge,
-  Grid
+  Grid,
+  Row,
+  Col
 } from 'antd'
 const { useBreakpoint } = Grid
 import { 
@@ -384,8 +386,9 @@ const ProductsPage: React.FC = () => {
           />
         </div>
 
-        {/* Mobile/Tablet Card Layout */}
-        {screens.xs || screens.sm ? (
+        {/* Responsive Card Layout */}
+        {screens.xs ? (
+          /* Mobile: Single Column */
           <div>
             {productsData?.data.map((product: Product) => (
               <ProductCard key={product.id} product={product} />
@@ -397,26 +400,21 @@ const ProductsPage: React.FC = () => {
             </div>
           </div>
         ) : (
-          /* Desktop Table Layout */
-          <Table
-            columns={columns}
-            dataSource={productsData?.data || []}
-            loading={isLoading}
-            rowKey="id"
-            pagination={{
-              current: filters.page || 1,
-              pageSize: filters.limit || 10,
-              total: productsData?.total || 0,
-              showSizeChanger: true,
-              showQuickJumper: true,
-              showTotal: (total, range) => 
-                `${range[0]}-${range[1]} of ${total} items`,
-              responsive: true,
-            }}
-            onChange={handleTableChange}
-            scroll={{ x: 1200 }}
-            size={screens.md ? 'middle' : 'small'}
-          />
+          /* Desktop: Grid Layout */
+          <div>
+            <Row gutter={[16, 16]}>
+              {productsData?.data.map((product: Product) => (
+                <Col key={product.id} xs={24} sm={12} md={8}>
+                  <ProductCard product={product} />
+                </Col>
+              ))}
+            </Row>
+            <div style={{ textAlign: 'center', marginTop: 16 }}>
+              <span style={{ color: '#666' }}>
+                Showing {productsData?.data.length || 0} of {productsData?.total || 0} products
+              </span>
+            </div>
+          </div>
         )}
       </Card>
     </div>

@@ -12,7 +12,9 @@ import {
   message,
   Tooltip,
   Badge,
-  Grid
+  Grid,
+  Row,
+  Col
 } from 'antd'
 import { 
   PlusOutlined, 
@@ -329,8 +331,9 @@ const UsersPage: React.FC = () => {
           />
         </div>
 
-        {/* Mobile/Tablet Card Layout */}
-        {screens.xs || screens.sm ? (
+        {/* Responsive Card Layout */}
+        {screens.xs ? (
+          /* Mobile: Single Column */
           <div>
             {usersData?.data.map((user: User) => (
               <UserCard key={user.id} user={user} />
@@ -342,26 +345,21 @@ const UsersPage: React.FC = () => {
             </div>
           </div>
         ) : (
-          /* Desktop Table Layout */
-          <Table
-            columns={columns}
-            dataSource={usersData?.data || []}
-            loading={isLoading}
-            rowKey="id"
-            pagination={{
-              current: filters.page || 1,
-              pageSize: filters.limit || 10,
-              total: usersData?.total || 0,
-              showSizeChanger: true,
-              showQuickJumper: true,
-              showTotal: (total, range) => 
-                `${range[0]}-${range[1]} of ${total} items`,
-              responsive: true,
-            }}
-            onChange={handleTableChange}
-            scroll={{ x: 1200 }}
-            size={screens.md ? 'middle' : 'small'}
-          />
+          /* Desktop: Grid Layout */
+          <div>
+            <Row gutter={[16, 16]}>
+              {usersData?.data.map((user: User) => (
+                <Col key={user.id} xs={24} sm={12} md={8}>
+                  <UserCard user={user} />
+                </Col>
+              ))}
+            </Row>
+            <div style={{ textAlign: 'center', marginTop: 16 }}>
+              <span style={{ color: '#666' }}>
+                Showing {usersData?.data.length || 0} of {usersData?.total || 0} users
+              </span>
+            </div>
+          </div>
         )}
       </Card>
     </div>
