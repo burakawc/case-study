@@ -15,9 +15,9 @@ import {
 import { useNavigate } from 'react-router-dom'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { productsApi } from '@/services/api'
-import { ArrowLeftOutlined, SaveOutlined, ThunderboltOutlined } from '@ant-design/icons'
+import { ArrowLeftOutlined, SaveOutlined } from '@ant-design/icons'
 import type { CreateProductRequest } from '@/types'
-import { PRODUCT_DUMMY_DATA, PRODUCT_CATEGORIES, PRODUCT_BRANDS } from '@/constants'
+import AutoFillButton from '@/components/AutoFillButton'
 
 // Form-specific type for product creation
 interface ProductFormData extends Omit<CreateProductRequest, 'images'> {
@@ -69,14 +69,6 @@ const AddProductPage: React.FC = () => {
     navigate('/products')
   }
 
-  const handleAutoFill = () => {
-    form.setFieldsValue({
-      ...PRODUCT_DUMMY_DATA,
-      images: PRODUCT_DUMMY_DATA.images.join(', ')
-    })
-    message.success('Form otomatik olarak dolduruldu!')
-  }
-
   return (
     <Card>
       <Space style={{ marginBottom: 24 }}>
@@ -86,13 +78,10 @@ const AddProductPage: React.FC = () => {
         >
           Back to Products
         </Button>
-        <Button 
-          type="dashed"
-          icon={<ThunderboltOutlined />} 
-          onClick={handleAutoFill}
-        >
-          Otomatik Doldur
-        </Button>
+        <AutoFillButton 
+          form={form}
+          pageType="product"
+        />
       </Space>
 
       <Title level={2}>Add New Product</Title>
