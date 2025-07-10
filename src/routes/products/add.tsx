@@ -27,6 +27,19 @@ const { Title } = Typography
 const { TextArea } = Input
 const { Option } = Select
 
+/**
+ * Add Product Page Component
+ * 
+ * Features:
+ * - Form for creating new products
+ * - Form validation with Ant Design
+ * - Image URL handling (comma-separated to array conversion)
+ * - Responsive layout with Row/Col grid
+ * - Integration with React Query for API calls
+ * - Navigation back to products list
+ * 
+ * @returns JSX element containing the add product form
+ */
 const AddProductPage: React.FC = () => {
   const navigate = useNavigate()
   const queryClient = useQueryClient()

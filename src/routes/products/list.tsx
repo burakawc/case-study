@@ -37,7 +37,7 @@ const ProductsList: React.FC = () => {
   const navigate = useNavigate()
   const queryClient = useQueryClient()
   const dispatch = useDispatch()
-  const favorites = useSelector((state: RootState) => (state as any).favorites.products)
+  const favorites = useSelector((state: RootState) => state.favorites.products)
   const [filters, setFilters] = useState<TableFilters>({
     page: 1,
     limit: 10,
@@ -112,7 +112,7 @@ const ProductsList: React.FC = () => {
       ) : (
         <Row gutter={[16, 16]}>
           {productsData?.data?.map((product: Product) => {
-            const isFavorite = favorites.some((fav: any) => fav.id === product.id)
+            const isFavorite = favorites.some((fav: Product) => fav.id === product.id)
             
             return (
               <Col key={product.id} xs={24} sm={12} md={8} lg={6}>

@@ -24,6 +24,21 @@ const { Title } = Typography
 const { TextArea } = Input
 const { Option } = Select
 
+/**
+ * Edit User Page Component
+ * 
+ * Features:
+ * - Form for editing existing users
+ * - Pre-populated form with current user data
+ * - Complex nested object handling (address, company, bank, hair)
+ * - Form validation with Ant Design
+ * - Responsive layout with Row/Col grid
+ * - Integration with React Query for API calls
+ * - Loading and error states
+ * - Navigation back to users list
+ * 
+ * @returns JSX element containing the edit user form
+ */
 const EditUserPage: React.FC = () => {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()

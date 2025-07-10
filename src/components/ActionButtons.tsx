@@ -9,10 +9,10 @@ import {
 } from '@ant-design/icons';
 
 interface ActionButtonsProps {
-  onView?: () => void;
-  onEdit?: () => void;
-  onDelete?: () => void;
-  onToggleFavorite?: () => void;
+  onView?: (() => void) | undefined;
+  onEdit?: (() => void) | undefined;
+  onDelete?: (() => void) | undefined;
+  onToggleFavorite?: (() => void) | undefined;
   isFavorite?: boolean;
   showFavorite?: boolean;
   showView?: boolean;

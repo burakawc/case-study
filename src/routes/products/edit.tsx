@@ -22,6 +22,21 @@ const { Title } = Typography
 const { TextArea } = Input
 const { Option } = Select
 
+/**
+ * Edit Product Page Component
+ * 
+ * Features:
+ * - Form for editing existing products
+ * - Pre-populated form with current product data
+ * - Form validation with Ant Design
+ * - Image URL handling (array to comma-separated conversion)
+ * - Responsive layout with Row/Col grid
+ * - Integration with React Query for API calls
+ * - Loading and error states
+ * - Navigation back to products list
+ * 
+ * @returns JSX element containing the edit product form
+ */
 const EditProductPage: React.FC = () => {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
