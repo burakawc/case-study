@@ -13,6 +13,7 @@ import {
   Col,
   Divider
 } from 'antd'
+import ErrorCard from '@/components/ErrorCard'
 import { 
   ArrowLeftOutlined, 
   EditOutlined, 
@@ -54,13 +55,7 @@ const UserDetailPage: React.FC = () => {
   }
 
   if (error || !user) {
-    return (
-      <Card>
-        <Title level={4} style={{ color: '#f5222d' }}>
-          User not found
-        </Title>
-      </Card>
-    )
+    return <ErrorCard message="User not found or error loading user." />
   }
 
   return (

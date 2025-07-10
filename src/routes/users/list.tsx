@@ -1,37 +1,21 @@
 import React, { useState, useCallback, useMemo } from 'react'
 import { 
   Button, 
-  Input, 
-  Space, 
-  Card, 
-  Typography, 
-  Tag, 
-  Avatar,
-  Popconfirm,
-  message,
-  Tooltip,
-  Badge,
-  Grid,
   Row,
-  Col
+  Col,
+  Spin
 } from 'antd'
-import { 
-  PlusOutlined, 
-  SearchOutlined, 
-  EditOutlined, 
-  DeleteOutlined,
-  EyeOutlined,
-  UserOutlined
-} from '@ant-design/icons'
+import { PlusOutlined } from '@ant-design/icons'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
 import { usersApi } from '@/services/api'
 import { debounce } from '@/utils/debounce'
 import type { User, TableFilters } from '@/types'
+import ErrorCard from '@/components/ErrorCard'
+import SearchBar from '@/components/SearchBar'
+import DataCard from '@/components/DataCard'
 
-const { Title } = Typography
-const { Search } = Input
-const { useBreakpoint } = Grid
+
 
 /**
  * Users listing page component
@@ -40,15 +24,14 @@ const { useBreakpoint } = Grid
  * - Displays paginated list of users
  * - Search and filtering functionality
  * - User CRUD operations (view, edit, delete)
- * - Responsive table with sorting
- * - Mobile-friendly card layout
+ * - Responsive card layout
+ * - Mobile-friendly design
  * 
  * @returns JSX element containing the users listing page
  */
 const UsersList: React.FC = () => {
   const navigate = useNavigate()
   const queryClient = useQueryClient()
-  const screens = useBreakpoint()
   const [filters, setFilters] = useState<TableFilters>({
     page: 1,
     limit: 10,
@@ -66,11 +49,10 @@ const UsersList: React.FC = () => {
   const deleteMutation = useMutation({
     mutationFn: usersApi.deleteUser,
     onSuccess: () => {
-      message.success('User deleted successfully')
       queryClient.invalidateQueries({ queryKey: ['users'] })
     },
     onError: () => {
-      message.error('Failed to delete user')
+      // Error handling is done in the component
     },
   })
 
@@ -86,99 +68,8 @@ const UsersList: React.FC = () => {
     debouncedSearch(value)
   }, [debouncedSearch])
 
-
-
-  // Mobile card component
-  const UserCard: React.FC<{ user: User }> = React.memo(({ user }) => {
-    return (
-      <Card
-        hoverable
-        style={{ marginBottom: 16 }}
-        bodyStyle={{ padding: 16 }}
-        actions={[
-          <Tooltip title="View Details">
-            <Button
-              type="text"
-              icon={<EyeOutlined />}
-              onClick={() => navigate(`/users/${user.id}`)}
-            />
-          </Tooltip>,
-          <Tooltip title="Edit">
-            <Button
-              type="text"
-              icon={<EditOutlined />}
-              onClick={() => navigate(`/users/${user.id}/edit`)}
-            />
-          </Tooltip>,
-          <Tooltip title="Delete">
-            <Popconfirm
-              title="Are you sure you want to delete this user?"
-              onConfirm={() => handleDelete(user.id)}
-              okText="Yes"
-              cancelText="No"
-            >
-              <Button
-                type="text"
-                danger
-                icon={<DeleteOutlined />}
-              />
-            </Popconfirm>
-          </Tooltip>,
-        ]}
-      >
-        <div style={{ display: 'flex', alignItems: 'center', marginBottom: 12 }}>
-          <Avatar 
-            src={user.image} 
-            size={60}
-            icon={<UserOutlined />}
-            style={{ marginRight: 12 }}
-          />
-          <div style={{ flex: 1 }}>
-            <Title level={5} style={{ margin: 0, marginBottom: 4 }}>
-              {user.firstName} {user.lastName}
-            </Title>
-            <div style={{ fontSize: '12px', color: '#666', marginBottom: 8 }}>
-              @{user.username}
-            </div>
-            <div style={{ fontSize: '12px', color: '#666', marginBottom: 8 }}>
-              {user.email}
-            </div>
-            <Space size="small">
-              <Tag color={user.gender === 'male' ? 'blue' : user.gender === 'female' ? 'pink' : 'default'}>
-                {user.gender}
-              </Tag>
-              <Tag color="red">{user.bloodGroup}</Tag>
-            </Space>
-          </div>
-        </div>
-        
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <div>
-            <div style={{ fontSize: '14px', color: '#666' }}>
-              Age: {user.age}
-            </div>
-            <div style={{ fontSize: '12px', color: '#666' }}>
-              {user.company.name}
-            </div>
-          </div>
-          <div style={{ textAlign: 'right' }}>
-            <Badge count={user.age} style={{ backgroundColor: '#1890ff' }} />
-          </div>
-        </div>
-      </Card>
-    )
-  })
-
-
-
   if (error) {
-    return (
-      <Card>
-        <Title level={4} style={{ color: '#f5222d' }}>
-          Error loading users. Please try again.
-        </Title>
-      </Card>
-    )
+    return <ErrorCard message="Error loading users. Please try again." />
   }
 
   return (
@@ -198,52 +89,31 @@ const UsersList: React.FC = () => {
         >
           Add User
         </Button>
-      </div>
-
-      <div style={{ marginBottom: 16 }}>
-        <Search
+        <SearchBar
           placeholder="Search users..."
-          allowClear
-          enterButton={<SearchOutlined />}
-          size="large"
-          style={{ 
-            width: screens.xs ? '100%' : screens.sm ? '100%' : 300,
-            maxWidth: 400
-          }}
-          onChange={(e) => handleSearch(e.target.value)}
           onSearch={handleSearch}
         />
       </div>
 
-      {/* Responsive Card Layout */}
-      {screens.xs ? (
-        /* Mobile: Single Column */
-        <div>
-          {usersData?.data.map((user: User) => (
-            <UserCard key={user.id} user={user} />
-          ))}
-          <div style={{ textAlign: 'center', marginTop: 16 }}>
-            <span style={{ color: '#666' }}>
-              Showing {usersData?.data.length || 0} of {usersData?.total || 0} users
-            </span>
-          </div>
+      {isLoading ? (
+        <div style={{ textAlign: 'center', padding: '50px 0' }}>
+          <Spin size="large" />
         </div>
       ) : (
-        /* Desktop: Grid Layout */
-        <div>
-          <Row gutter={[16, 16]}>
-            {usersData?.data.map((user: User) => (
-              <Col key={user.id} xs={24} sm={12} md={8}>
-                <UserCard user={user} />
-              </Col>
-            ))}
-          </Row>
-          <div style={{ textAlign: 'center', marginTop: 16 }}>
-            <span style={{ color: '#666' }}>
-              Showing {usersData?.data.length || 0} of {usersData?.total || 0} users
-            </span>
-          </div>
-        </div>
+        <Row gutter={[16, 16]}>
+          {usersData?.data?.map((user: User) => (
+            <Col key={user.id} xs={24} sm={12} md={8} lg={6}>
+              <DataCard
+                data={user}
+                type="user"
+                onView={() => navigate(`/users/${user.id}`)}
+                onEdit={() => navigate(`/users/${user.id}/edit`)}
+                onDelete={() => handleDelete(user.id)}
+                showFavorite={false}
+              />
+            </Col>
+          ))}
+        </Row>
       )}
     </div>
   )

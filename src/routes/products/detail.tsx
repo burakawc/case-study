@@ -14,6 +14,7 @@ import {
   Divider,
   Grid
 } from 'antd'
+import ErrorCard from '@/components/ErrorCard'
 import { 
   ArrowLeftOutlined, 
   EditOutlined, 
@@ -71,13 +72,7 @@ const ProductDetailPage: React.FC = () => {
   }
 
   if (error || !product) {
-    return (
-      <Card>
-        <Title level={4} style={{ color: '#f5222d' }}>
-          Product not found
-        </Title>
-      </Card>
-    )
+    return <ErrorCard message="Product not found or error loading product." />
   }
 
   return (
