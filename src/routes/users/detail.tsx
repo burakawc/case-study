@@ -9,10 +9,10 @@ import {
   Badge,
   Divider
 } from 'antd'
-import ErrorCard from '@/components/ErrorCard'
-import LoadingCard from '@/components/LoadingCard'
-import PageHeader from '@/components/PageHeader'
-import DetailLayout from '@/components/DetailLayout'
+import ErrorCard from '@/components/cards/ErrorCard'
+import LoadingCard from '@/components/cards/LoadingCard'
+import PageHeader from '@/components/layout/PageHeader'
+import DetailLayout from '@/components/layout/DetailLayout'
 import { 
   UserOutlined,
   MailOutlined,

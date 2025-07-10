@@ -11,9 +11,9 @@ import { useNavigate } from 'react-router-dom'
 import { usersApi } from '@/services/api'
 import { debounce } from '@/utils/debounce'
 import type { User, TableFilters } from '@/types'
-import ErrorCard from '@/components/ErrorCard'
+import ErrorCard from '@/components/cards/ErrorCard'
 import SearchBar from '@/components/SearchBar'
-import DataCard from '@/components/DataCard'
+import DataCard from '@/components/cards/DataCard'
 
 
 
@@ -92,6 +92,7 @@ const UsersList: React.FC = () => {
         <SearchBar
           placeholder="Search users..."
           onSearch={handleSearch}
+          onChange={(e) => handleSearch(e.target.value)}
         />
       </div>
 

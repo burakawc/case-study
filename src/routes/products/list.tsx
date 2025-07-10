@@ -14,9 +14,9 @@ import { toggleFavorite } from '@/store/favoritesSlice'
 import { debounce } from '@/utils/debounce'
 import type { Product, TableFilters } from '@/types'
 import type { RootState } from '@/store'
-import ErrorCard from '@/components/ErrorCard'
+import ErrorCard from '@/components/cards/ErrorCard'
 import SearchBar from '@/components/SearchBar'
-import DataCard from '@/components/DataCard'
+import DataCard from '@/components/cards/DataCard'
 
 
 
@@ -102,6 +102,7 @@ const ProductsList: React.FC = () => {
         <SearchBar
           placeholder="Search products..."
           onSearch={handleSearch}
+          onChange={(e) => handleSearch(e.target.value)}
         />
       </div>
 
