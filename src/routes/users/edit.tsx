@@ -12,13 +12,14 @@ import {
   message,
   Row,
   Col,
-  Spin,
   Divider
 } from 'antd'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { usersApi } from '@/services/api'
 import { ArrowLeftOutlined, SaveOutlined } from '@ant-design/icons'
 import type { UpdateUserRequest } from '@/types'
+import LoadingCard from '@/components/cards/LoadingCard'
+import ErrorCard from '@/components/cards/ErrorCard'
 
 const { Title } = Typography
 const { TextArea } = Input
@@ -151,24 +152,11 @@ const EditUserPage: React.FC = () => {
   }
 
   if (isLoading) {
-    return (
-      <Card>
-        <div style={{ textAlign: 'center', padding: '50px' }}>
-          <Spin size="large" />
-          <div style={{ marginTop: 16 }}>Loading user...</div>
-        </div>
-      </Card>
-    )
+    return <LoadingCard message="Loading user details..." />
   }
 
   if (error || !user) {
-    return (
-      <Card>
-        <Title level={4} style={{ color: '#f5222d' }}>
-          User not found
-        </Title>
-      </Card>
-    )
+    return <ErrorCard message="User not found or error loading user." />
   }
 
   return (

@@ -11,12 +11,13 @@ import {
   Typography, 
   message,
   Row,
-  Col,
-  Spin
+  Col
 } from 'antd'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { productsApi } from '@/services/api'
 import { ArrowLeftOutlined, SaveOutlined } from '@ant-design/icons'
+import LoadingCard from '@/components/cards/LoadingCard'
+import ErrorCard from '@/components/cards/ErrorCard'
 
 const { Title } = Typography
 const { TextArea } = Input
@@ -86,24 +87,11 @@ const EditProductPage: React.FC = () => {
   }
 
   if (isLoading) {
-    return (
-      <Card>
-        <div style={{ textAlign: 'center', padding: '50px' }}>
-          <Spin size="large" />
-          <div style={{ marginTop: 16 }}>Loading product...</div>
-        </div>
-      </Card>
-    )
+    return <LoadingCard message="Loading product details..." />
   }
 
   if (error || !product) {
-    return (
-      <Card>
-        <Title level={4} style={{ color: '#f5222d' }}>
-          Product not found
-        </Title>
-      </Card>
-    )
+    return <ErrorCard message="Product not found or error loading product." />
   }
 
   return (

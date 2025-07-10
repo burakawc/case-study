@@ -2,8 +2,7 @@ import React, { useState, useCallback, useMemo } from 'react'
 import { 
   Button, 
   Row,
-  Col,
-  Spin
+  Col
 } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
@@ -15,6 +14,7 @@ import { debounce } from '@/utils/debounce'
 import type { Product, TableFilters } from '@/types'
 import type { RootState } from '@/store'
 import ErrorCard from '@/components/cards/ErrorCard'
+import LoadingCard from '@/components/cards/LoadingCard'
 import SearchBar from '@/components/SearchBar'
 import DataCard from '@/components/cards/DataCard'
 
@@ -107,9 +107,7 @@ const ProductsList: React.FC = () => {
       </div>
 
       {isLoading ? (
-        <div style={{ textAlign: 'center', padding: '50px 0' }}>
-          <Spin size="large" />
-        </div>
+        <LoadingCard message="Loading products..." />
       ) : (
         <Row gutter={[16, 16]}>
           {productsData?.data?.map((product: Product) => {
