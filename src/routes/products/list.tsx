@@ -23,7 +23,6 @@ import {
   EditOutlined, 
   DeleteOutlined,
   EyeOutlined,
-  ShoppingOutlined,
   HeartOutlined,
   HeartFilled
 } from '@ant-design/icons'
@@ -50,9 +49,9 @@ const { Search } = Input
  * - Responsive table with sorting
  * - Mobile-friendly card layout
  * 
- * @returns JSX element containing the products page
+ * @returns JSX element containing the products listing page
  */
-const ProductsPage: React.FC = () => {
+const ProductsList: React.FC = () => {
   const navigate = useNavigate()
   const queryClient = useQueryClient()
   const dispatch = useDispatch()
@@ -349,76 +348,70 @@ const ProductsPage: React.FC = () => {
 
   return (
     <div>
-      <Card>
-        <div style={{ 
-          display: 'flex', 
-          justifyContent: 'space-between', 
-          alignItems: 'center',
-          marginBottom: 16,
-          flexWrap: 'wrap',
-          gap: 16
-        }}>
-          <Title level={3} style={{ margin: 0 }}>
-            <ShoppingOutlined style={{ marginRight: 8 }} />
-            Products
-          </Title>
-          <Button 
-            type="primary" 
-            icon={<PlusOutlined />}
-            onClick={() => navigate('/products/new')}
-          >
-            Add Product
-          </Button>
-        </div>
+      <div style={{ 
+        display: 'flex', 
+        justifyContent: 'space-between', 
+        alignItems: 'center',
+        marginBottom: 16,
+        flexWrap: 'wrap',
+        gap: 16
+      }}>
+        <Button 
+          type="primary" 
+          icon={<PlusOutlined />}
+          onClick={() => navigate('/products/new')}
+        >
+          Add Product
+        </Button>
+      </div>
 
-        <div style={{ marginBottom: 16 }}>
-          <Search
-            placeholder="Search products..."
-            allowClear
-            enterButton={<SearchOutlined />}
-            size="large"
-            style={{ 
-              width: screens.xs ? '100%' : screens.sm ? '100%' : 300,
-              maxWidth: 400
-            }}
-            onChange={(e) => handleSearch(e.target.value)}
-            onSearch={handleSearch}
-          />
-        </div>
+      <div style={{ marginBottom: 16 }}>
+        <Search
+          placeholder="Search products..."
+          allowClear
+          enterButton={<SearchOutlined />}
+          size="large"
+          style={{ 
+            width: screens.xs ? '100%' : screens.sm ? '100%' : 300,
+            maxWidth: 400
+          }}
+          onChange={(e) => handleSearch(e.target.value)}
+          onSearch={handleSearch}
+        />
+      </div>
 
-        {/* Responsive Card Layout */}
-        {screens.xs ? (
-          /* Mobile: Single Column */
-          <div>
+      {/* Responsive Card Layout */}
+      {screens.xs ? (
+        /* Mobile: Single Column */
+        <div>
+          {productsData?.data.map((product: Product) => (
+            <ProductCard key={product.id} product={product} />
+          ))}
+          <div style={{ textAlign: 'center', marginTop: 16 }}>
+            <span style={{ color: '#666' }}>
+              Showing {productsData?.data.length || 0} of {productsData?.total || 0} products
+            </span>
+          </div>
+        </div>
+      ) : (
+        /* Desktop: Grid Layout */
+        <div>
+          <Row gutter={[16, 16]}>
             {productsData?.data.map((product: Product) => (
-              <ProductCard key={product.id} product={product} />
+              <Col key={product.id} xs={24} sm={12} md={8}>
+                <ProductCard product={product} />
+              </Col>
             ))}
-            <div style={{ textAlign: 'center', marginTop: 16 }}>
-              <span style={{ color: '#666' }}>
-                Showing {productsData?.data.length || 0} of {productsData?.total || 0} products
-              </span>
-            </div>
+          </Row>
+          <div style={{ textAlign: 'center', marginTop: 16 }}>
+            <span style={{ color: '#666' }}>
+              Showing {productsData?.data.length || 0} of {productsData?.total || 0} products
+            </span>
           </div>
-        ) : (
-          /* Desktop: Grid Layout */
-          <div>
-            <Row gutter={[16, 16]}>
-              {productsData?.data.map((product: Product) => (
-                <Col key={product.id} xs={24} sm={12} md={8}>
-                  <ProductCard product={product} />
-                </Col>
-              ))}
-            </Row>
-            <div style={{ textAlign: 'center', marginTop: 16 }}>
-              <span style={{ color: '#666' }}>
-                Showing {productsData?.data.length || 0} of {productsData?.total || 0} products
-              </span>
-            </div>
-          </div>
-        )}
-      </Card>
+        </div>
+      )}
     </div>
   )
 }
 
-export default ProductsPage 
+export default ProductsList 

@@ -34,7 +34,19 @@ const { Title } = Typography
 const { Search } = Input
 const { useBreakpoint } = Grid
 
-const UsersPage: React.FC = () => {
+/**
+ * Users listing page component
+ * 
+ * Features:
+ * - Displays paginated list of users
+ * - Search and filtering functionality
+ * - User CRUD operations (view, edit, delete)
+ * - Responsive table with sorting
+ * - Mobile-friendly card layout
+ * 
+ * @returns JSX element containing the users listing page
+ */
+const UsersList: React.FC = () => {
   const navigate = useNavigate()
   const queryClient = useQueryClient()
   const screens = useBreakpoint()
@@ -294,76 +306,70 @@ const UsersPage: React.FC = () => {
 
   return (
     <div>
-      <Card>
-        <div style={{ 
-          display: 'flex', 
-          justifyContent: 'space-between', 
-          alignItems: 'center',
-          marginBottom: 16,
-          flexWrap: 'wrap',
-          gap: 16
-        }}>
-          <Title level={3} style={{ margin: 0 }}>
-            <UserOutlined style={{ marginRight: 8 }} />
-            Users
-          </Title>
-          <Button 
-            type="primary" 
-            icon={<PlusOutlined />}
-            onClick={() => navigate('/users/new')}
-          >
-            Add User
-          </Button>
-        </div>
+      <div style={{ 
+        display: 'flex', 
+        justifyContent: 'space-between', 
+        alignItems: 'center',
+        marginBottom: 16,
+        flexWrap: 'wrap',
+        gap: 16
+      }}>
+        <Button 
+          type="primary" 
+          icon={<PlusOutlined />}
+          onClick={() => navigate('/users/new')}
+        >
+          Add User
+        </Button>
+      </div>
 
-        <div style={{ marginBottom: 16 }}>
-          <Search
-            placeholder="Search users..."
-            allowClear
-            enterButton={<SearchOutlined />}
-            size="large"
-            style={{ 
-              width: screens.xs ? '100%' : screens.sm ? '100%' : 300,
-              maxWidth: 400
-            }}
-            onChange={(e) => handleSearch(e.target.value)}
-            onSearch={handleSearch}
-          />
-        </div>
+      <div style={{ marginBottom: 16 }}>
+        <Search
+          placeholder="Search users..."
+          allowClear
+          enterButton={<SearchOutlined />}
+          size="large"
+          style={{ 
+            width: screens.xs ? '100%' : screens.sm ? '100%' : 300,
+            maxWidth: 400
+          }}
+          onChange={(e) => handleSearch(e.target.value)}
+          onSearch={handleSearch}
+        />
+      </div>
 
-        {/* Responsive Card Layout */}
-        {screens.xs ? (
-          /* Mobile: Single Column */
-          <div>
+      {/* Responsive Card Layout */}
+      {screens.xs ? (
+        /* Mobile: Single Column */
+        <div>
+          {usersData?.data.map((user: User) => (
+            <UserCard key={user.id} user={user} />
+          ))}
+          <div style={{ textAlign: 'center', marginTop: 16 }}>
+            <span style={{ color: '#666' }}>
+              Showing {usersData?.data.length || 0} of {usersData?.total || 0} users
+            </span>
+          </div>
+        </div>
+      ) : (
+        /* Desktop: Grid Layout */
+        <div>
+          <Row gutter={[16, 16]}>
             {usersData?.data.map((user: User) => (
-              <UserCard key={user.id} user={user} />
+              <Col key={user.id} xs={24} sm={12} md={8}>
+                <UserCard user={user} />
+              </Col>
             ))}
-            <div style={{ textAlign: 'center', marginTop: 16 }}>
-              <span style={{ color: '#666' }}>
-                Showing {usersData?.data.length || 0} of {usersData?.total || 0} users
-              </span>
-            </div>
+          </Row>
+          <div style={{ textAlign: 'center', marginTop: 16 }}>
+            <span style={{ color: '#666' }}>
+              Showing {usersData?.data.length || 0} of {usersData?.total || 0} users
+            </span>
           </div>
-        ) : (
-          /* Desktop: Grid Layout */
-          <div>
-            <Row gutter={[16, 16]}>
-              {usersData?.data.map((user: User) => (
-                <Col key={user.id} xs={24} sm={12} md={8}>
-                  <UserCard user={user} />
-                </Col>
-              ))}
-            </Row>
-            <div style={{ textAlign: 'center', marginTop: 16 }}>
-              <span style={{ color: '#666' }}>
-                Showing {usersData?.data.length || 0} of {usersData?.total || 0} users
-              </span>
-            </div>
-          </div>
-        )}
-      </Card>
+        </div>
+      )}
     </div>
   )
 }
 
-export default UsersPage 
+export default UsersList 
