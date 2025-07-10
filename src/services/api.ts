@@ -439,12 +439,16 @@ export const usersApi = {
     let filteredUsers = [...mockUsers];
 
     if (params?.search) {
+      const searchTerm = params.search.toLowerCase();
       filteredUsers = filteredUsers.filter(
         (user) =>
-          user.firstName.toLowerCase().includes(params.search!.toLowerCase()) ||
-          user.lastName.toLowerCase().includes(params.search!.toLowerCase()) ||
-          user.email.toLowerCase().includes(params.search!.toLowerCase()) ||
-          user.username.toLowerCase().includes(params.search!.toLowerCase())
+          user.firstName.toLowerCase().includes(searchTerm) ||
+          user.lastName.toLowerCase().includes(searchTerm) ||
+          `${user.firstName} ${user.lastName}`
+            .toLowerCase()
+            .includes(searchTerm) ||
+          user.email.toLowerCase().includes(searchTerm) ||
+          user.username.toLowerCase().includes(searchTerm)
       );
     }
 

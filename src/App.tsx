@@ -14,6 +14,7 @@ const UsersLayout = lazy(() => import('@/routes/users/index'))
 const UsersList = lazy(() => import('@/routes/users/list'))
 const UserDetail = lazy(() => import('@/routes/users/detail'))
 const EditUser = lazy(() => import('@/routes/users/edit'))
+const AddUser = lazy(() => import('@/routes/users/add'))
 const NotFound = lazy(() => import('@/routes/not-found'))
 
 /**
@@ -79,6 +80,11 @@ const App: FunctionComponent = () => {
           <Route index element={
             <Suspense fallback={<LoadingSpinner />}>
               <UsersList />
+            </Suspense>
+          } />
+          <Route path="new" element={
+            <Suspense fallback={<LoadingSpinner />}>
+              <AddUser />
             </Suspense>
           } />
           <Route path=":id" element={
