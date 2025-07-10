@@ -157,25 +157,39 @@ const ProductsPage: React.FC = () => {
           </Tooltip>,
         ]}
       >
-        <div style={{ display: 'flex', alignItems: 'center', marginBottom: 12 }}>
-          <Image
-            src={product.thumbnail}
-            alt={product.title}
-            width={60}
-            height={60}
-            style={{ objectFit: 'cover', borderRadius: 8, marginRight: 12 }}
-          />
-          <div style={{ flex: 1 }}>
-            <Title level={5} style={{ margin: 0, marginBottom: 4 }}>
+        <div style={{ display: 'flex', alignItems: 'flex-start', marginBottom: 12 }}>
+          <div style={{
+            width: 56,
+            height: 56,
+            minWidth: 56,
+            minHeight: 56,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            borderRadius: 12,
+            marginRight: 14,
+            overflow: 'hidden',
+          }}>
+            <Image
+              src={product.thumbnail}
+              alt={product.title}
+              width={48}
+              height={48}
+              style={{ objectFit: 'cover', borderRadius: 8, background: 'transparent' }}
+              preview={false}
+            />
+          </div>
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <Title level={5} style={{ margin: 0, marginBottom: 4, wordBreak: 'break-word' }}>
               {product.title}
             </Title>
-            <div style={{ fontSize: '12px', color: '#666', marginBottom: 8 }}>
+            <div style={{ fontSize: '12px', color: '#666', marginBottom: 8, wordBreak: 'break-word' }}>
               {product.description.length > 50 
                 ? `${product.description.substring(0, 50)}...` 
                 : product.description
               }
             </div>
-            <Space size="small">
+            <Space size="small" wrap>
               <Tag color="blue">{product.brand}</Tag>
               <Tag color="green">{product.category}</Tag>
             </Space>
